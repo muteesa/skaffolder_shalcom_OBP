@@ -1,0 +1,794 @@
+openapi: 3.0.0
+info:
+  title: skaffolder_shalcom_OBP
+  description: You can obtain JWT token from login API
+  version: 0.1
+servers:
+  - url: http://localhost:3000/api
+    description: Local server for testing
+paths:
+  /login:
+    post:
+      summary: Login API
+      security: []   # No security
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              example:   # Sample object
+                username: admin
+                password: 62f264d7ad826f02a8af714c0a54b197935b717656b80461686d450f7b3abde4c553541515de2052b9af70f710f0cd8a1a2d3f4d60aa72608d71a63a9a93c0f5
+      responses:
+        '200':
+          description: OK
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /verifyToken:
+    post:
+      summary: Verify token API
+      security: [] #No security
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /changePassword:
+    post:
+      summary: Change password API
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passwordNew:
+                  type: string
+                passwordOld:
+                  type: string
+      responses:
+        '200':
+          description: OK
+                
+
+  #-----  Account  -----
+  /account/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - Account
+      parameters:
+        - name: obj
+          in: path
+          description: Object to insert
+          required: true
+          schema:
+            type: Account
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                balance:
+                  type: number
+                begin_balance:
+                  type: number
+                begin_balance_time_stamp:
+                  type: integer
+                credit_balance:
+                  type: number
+                description:
+                  type: string
+                type:
+                  type: string
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Account
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+    
+  /account/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - Account
+      parameters:
+        - name: id
+          in: path
+          description: Id Account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - Account
+      parameters:
+        - name: id
+          in: path
+          description: Id Account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Account
+      parameters:
+        - name: id
+          in: path
+          description: Id Account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+    
+  #-----  Tx  -----
+  /tx/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - Tx
+      parameters:
+        - name: obj
+          in: path
+          description: Object to insert
+          required: true
+          schema:
+            type: Tx
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tx"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: number
+                amount:
+                  type: number
+                balance:
+                  type: number
+                description:
+                  type: string
+                time_stamp:
+                  type: integer
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Tx
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tx"
+    
+  /tx/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - Tx
+      parameters:
+        - name: id
+          in: path
+          description: Id Tx
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - Tx
+      parameters:
+        - name: id
+          in: path
+          description: Id Tx
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tx"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Tx
+      parameters:
+        - name: id
+          in: path
+          description: Id Tx
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tx"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tx"
+    
+  /tx/findByaccount_id/{key}:
+    get:
+      summary: CRUD ACTION findByaccount_id
+      tags:
+        - Tx
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource account_id to search
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tx"
+    
+  #-----  User  -----
+  /user/{id}/changePassword:
+    post:
+      summary: Change password of user from admin
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+    
+  /user/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                country:
+                  type: string
+                mail:
+                  type: string
+                name:
+                  type: string
+                password:
+                  type: string
+                roles:
+                  type: string
+                surname:
+                  type: string
+                username:
+                  type: string
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    
+  /user/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id resource
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+    
+  /user/findByuser_accounts/{key}:
+    get:
+      summary: CRUD ACTION findByuser_accounts
+      tags:
+        - User
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource user_accounts to search
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    
+  #-----  customer_account  -----
+  /customer_account/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - customer_account
+      parameters:
+        - name: obj
+          in: path
+          description: Object to insert
+          required: true
+          schema:
+            type: customer_account
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/customer_account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: string
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - customer_account
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/customer_account"
+    
+  /customer_account/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - customer_account
+      parameters:
+        - name: id
+          in: path
+          description: Id customer_account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - customer_account
+      parameters:
+        - name: id
+          in: path
+          description: Id customer_account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/customer_account"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - customer_account
+      parameters:
+        - name: id
+          in: path
+          description: Id customer_account
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/customer_account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/customer_account"
+    
+  /customer_account/findByaccount_id/{key}:
+    get:
+      summary: CRUD ACTION findByaccount_id
+      tags:
+        - customer_account
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource account_id to search
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/customer_account"
+    
+    
+  #-----  User  -----
+  /Users/{id}/changePassword:
+    post:
+      summary: Change password by admin API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passwordNew:
+                  type: string
+                passwordAdmin:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /Users/{id}:
+    post:
+      summary: Update User API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+    delete:
+      summary: Delete User API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /Users:
+    post:
+      summary: Create User API
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: 'string'
+                password: 
+                  type: 'string'
+                mail: 
+                  type: 'string'
+                name: 
+                  type: 'string'
+                surname: 
+                  type: 'string'
+                roles: 
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    
+# JWT security
+security:
+  - bearerAuth: [] 
+  
+  
+# Components
+components:
+
+  # Security
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  # Data Model
+  schemas:
+    User:
+      properties:
+        username:
+          type: 'string'
+        password: 
+          type: 'string'
+        mail: 
+          type: 'string'
+        name: 
+          type: 'string'
+        surname: 
+          type: 'string'
+        roles: 
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - password
+        
+
+    Account:
+      properties:
+        _id:
+          type: string
+        balance:
+          type: number
+        begin_balance:
+          type: number
+        begin_balance_time_stamp:
+          type: integer
+        credit_balance:
+          type: number
+        description:
+          type: string
+        type:
+          type: string
+      required:
+        -  _id
+      
+    
+    Tx:
+      properties:
+        _id:
+          type: string
+        account_id:
+          type: number
+        amount:
+          type: number
+        balance:
+          type: number
+        description:
+          type: string
+        time_stamp:
+          type: integer
+      required:
+        -  _id
+      
+    
+    User:
+      properties:
+        _id:
+          type: string
+        country:
+          type: string
+        mail:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+        roles:
+          type: string
+        surname:
+          type: string
+        username:
+          type: string
+      required:
+        -  _id
+        - password
+        - username
+      
+    
+    customer_account:
+      properties:
+        _id:
+          type: string
+        account_id:
+          type: string
+      required:
+        -  _id
+      
+    
